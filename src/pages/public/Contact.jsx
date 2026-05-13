@@ -1,76 +1,107 @@
-import React from 'react'
-import { Mail, Phone, MapPin, Send } from 'lucide-react'
+import React, { useState } from 'react'
 
 export default function Contact() {
+  const [formSubmitted, setFormSubmitted] = useState(false)
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    setFormSubmitted(true)
+  }
+
   return (
-    <div className="max-w-7xl mx-auto px-6 py-12 md:py-20 grid grid-cols-1 lg:grid-cols-2 gap-12">
-      <div className="flex flex-col justify-center gap-8 animate-fade-in">
-        <div>
-          <span className="text-xs bg-brand-accent/10 text-brand-accent border border-brand-accent/20 px-3 py-1 rounded-full uppercase tracking-widest font-bold">Contact</span>
-          <h2 className="text-3xl md:text-5xl font-extrabold text-white mt-4 font-poppins">Get In Touch With Us</h2>
-          <p className="text-neutral-400 mt-4 text-sm md:text-base leading-relaxed">
-            Planning a grand wedding or music festival? Reach out directly and let our expert sound engineers customize the perfect system layout for your venue.
-          </p>
-        </div>
-
-        <div className="flex flex-col gap-5">
-          <div className="flex items-center gap-4">
-            <div className="bg-brand-bg-elevated p-3 rounded-xl border border-neutral-800 text-brand-primary">
-              <Mail className="w-6 h-6" />
-            </div>
-            <div>
-              <p className="text-xs text-neutral-600 font-semibold uppercase">Email Support</p>
-              <p className="text-sm font-semibold text-white">support@ranadjevents.com</p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <div className="bg-brand-bg-elevated p-3 rounded-xl border border-neutral-800 text-brand-primary-light">
-              <Phone className="w-6 h-6" />
-            </div>
-            <div>
-              <p className="text-xs text-neutral-600 font-semibold uppercase">Hotline Number</p>
-              <p className="text-sm font-semibold text-white">+91 98765 43210</p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <div className="bg-brand-bg-elevated p-3 rounded-xl border border-neutral-800 text-brand-accent">
-              <MapPin className="w-6 h-6" />
-            </div>
-            <div>
-              <p className="text-xs text-neutral-600 font-semibold uppercase">Office Headquarters</p>
-              <p className="text-sm font-semibold text-white">Cuttack, Odisha, India</p>
-            </div>
-          </div>
-        </div>
+    <div className="animate-slide-up px-6 md:px-16 max-w-[1280px] mx-auto pb-24">
+      {/* Header */}
+      <div className="mb-16 mt-10">
+        <h2 className="font-syne text-3xl md:text-[72px] font-extrabold text-primary mb-4 tracking-[-0.02em] leading-tight">LET'S CONNECT</h2>
+        <p className="text-on-surface-variant text-base md:text-lg max-w-2xl leading-relaxed">
+          Elevate your next event with world-class entertainment. Reach out for bookings, inquiries, or exclusive VIP access.
+        </p>
       </div>
 
-      <div className="bg-brand-bg-card border border-neutral-800 p-8 rounded-3xl animate-slide-up">
-        <h3 className="text-xl font-bold text-white font-poppins">Send a Message</h3>
-        <p className="text-xs text-neutral-500 mt-1">We typically reply within 2 hours during event seasons</p>
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+        {/* Contact Form */}
+        <div className="md:col-span-7 glass-card p-8 rounded-xl relative overflow-hidden group">
+          <div className="absolute -top-24 -right-24 w-48 h-48 bg-primary/10 blur-[100px] rounded-full"></div>
+          <h3 className="font-syne text-2xl md:text-3xl font-bold mb-8 flex items-center gap-3">
+            <span className="material-symbols-outlined text-secondary">send</span> Send a Request
+          </h3>
 
-        <form className="mt-6 flex flex-col gap-4" onSubmit={(e) => e.preventDefault()}>
-          <div className="flex flex-col gap-1.5">
-            <label className="text-[10px] uppercase font-bold text-neutral-500">Your Name</label>
-            <input type="text" placeholder="Your Name" className="bg-brand-bg border border-neutral-800 text-sm p-3.5 rounded-xl text-white focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/50 transition-all duration-300" required />
+          {formSubmitted ? (
+            <div className="text-center py-20 bg-white/5 rounded-xl border border-primary/30">
+              <span className="material-symbols-outlined text-6xl text-primary mb-4">check_circle</span>
+              <h4 className="font-syne text-2xl font-bold mb-2">Transmission Received</h4>
+              <p className="text-on-surface-variant">Our agents will contact you shortly.</p>
+              <button onClick={() => setFormSubmitted(false)} className="mt-8 text-primary underline text-sm font-semibold">Send another request</button>
+            </div>
+          ) : (
+            <form className="space-y-6" onSubmit={handleSubmit}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="font-sans text-xs uppercase tracking-widest font-semibold text-on-surface-variant">Name</label>
+                  <input required className="w-full bg-black/40 border border-white/10 rounded-lg p-4 text-white text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder-on-surface-variant/50" placeholder="John Doe" type="text" />
+                </div>
+                <div className="space-y-2">
+                  <label className="font-sans text-xs uppercase tracking-widest font-semibold text-on-surface-variant">Email</label>
+                  <input required className="w-full bg-black/40 border border-white/10 rounded-lg p-4 text-white text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder-on-surface-variant/50" placeholder="john@example.com" type="email" />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="font-sans text-xs uppercase tracking-widest font-semibold text-on-surface-variant">Event Date</label>
+                <input required className="w-full bg-black/40 border border-white/10 rounded-lg p-4 text-white text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" type="date" />
+              </div>
+
+              <div className="space-y-2">
+                <label className="font-sans text-xs uppercase tracking-widest font-semibold text-on-surface-variant">Message</label>
+                <textarea required className="w-full bg-black/40 border border-white/10 rounded-lg p-4 text-white text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder-on-surface-variant/50" placeholder="Tell us about your event vision..." rows="4"></textarea>
+              </div>
+
+              <button type="submit" className="w-full py-4 bg-primary text-on-primary-container font-bold rounded-lg hover:shadow-[0_0_20px_rgba(221,183,255,0.6)] active:scale-[0.98] transition-all text-sm uppercase tracking-wider">
+                Transmit Request
+              </button>
+            </form>
+          )}
+        </div>
+
+        {/* Contact Channels + Map */}
+        <div className="md:col-span-5 flex flex-col gap-8">
+          <div className="glass-card p-8 rounded-xl">
+            <h3 className="font-sans text-xs uppercase tracking-[0.2em] font-semibold text-secondary mb-6">Contact Channels</h3>
+            <div className="space-y-6">
+              <div className="flex items-center gap-4 group cursor-pointer">
+                <div className="w-12 h-12 rounded-full glass-card flex items-center justify-center border-secondary/30 group-hover:border-secondary transition-colors">
+                  <span className="material-symbols-outlined text-secondary">mail</span>
+                </div>
+                <div>
+                  <p className="text-xs font-semibold text-on-surface-variant">Email Us</p>
+                  <p className="text-white font-bold text-sm">bookings@ranadj.com</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-4 group cursor-pointer">
+                <div className="w-12 h-12 rounded-full glass-card flex items-center justify-center border-primary/30 group-hover:border-primary transition-colors">
+                  <span className="material-symbols-outlined text-primary">call</span>
+                </div>
+                <div>
+                  <p className="text-xs font-semibold text-on-surface-variant">Hotline</p>
+                  <p className="text-white font-bold text-sm">+91 98765 43210</p>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div className="flex flex-col gap-1.5">
-            <label className="text-[10px] uppercase font-bold text-neutral-500">Email Address</label>
-            <input type="email" placeholder="you@example.com" className="bg-brand-bg border border-neutral-800 text-sm p-3.5 rounded-xl text-white focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/50 transition-all duration-300" required />
+          <div className="glass-card rounded-xl overflow-hidden flex-grow group">
+            <div className="p-6">
+              <h3 className="font-sans text-xs uppercase tracking-[0.2em] font-semibold text-primary">Headquarters</h3>
+              <p className="text-on-surface-variant text-sm">Cuttack, Odisha, India</p>
+            </div>
+            <div className="h-48 w-full relative grayscale contrast-125 opacity-70 group-hover:opacity-100 transition-opacity">
+              <img className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuApUles7Xvi5OU0Cg01FtQlvlxek6eQpt0zvHbXTVTfc5Vq0p7zS7Gdh_eChgfuBTU9XwhlVLzMfD8Ax7Ig7jPuSyJj_ZYQln4F4ijr0BjE2WmhA2zCULF4bv-SBt-BKByuDGI6QbacUMNcrgDb_d-YbHgFlkE8A6zi6vpl7fPCx-Ph6f1H3lpy6YqOumyCJVQp0h3ynqKVvT8UiL1J3Z0iWoDM27JzamfhlNh0IPRZADhCakMjv07Z5CLSyeAYm05Pw_YBzg9xuw" alt="Office location map" />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="material-symbols-outlined text-primary text-4xl animate-bounce" style={{ fontVariationSettings: "'FILL' 1" }}>location_on</span>
+              </div>
+            </div>
           </div>
-
-          <div className="flex flex-col gap-1.5">
-            <label className="text-[10px] uppercase font-bold text-neutral-500">Your Inquiry Description</label>
-            <textarea rows="4" placeholder="Describe your event details..." className="bg-brand-bg border border-neutral-800 text-sm p-3.5 rounded-xl text-white focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/50 transition-all duration-300" required></textarea>
-          </div>
-
-          <button className="bg-gradient-to-r from-brand-primary to-amber-500 hover:from-brand-primary-deep hover:to-amber-600 text-white font-semibold text-xs py-4 rounded-xl mt-2 flex items-center justify-center gap-2 transition-all duration-300 shadow-lg shadow-brand-primary/15 hover:shadow-brand-primary/25">
-            Submit Message
-            <Send className="w-4 h-4" />
-          </button>
-        </form>
+        </div>
       </div>
     </div>
   )

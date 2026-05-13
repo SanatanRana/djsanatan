@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
-import { Lock, Mail, Disc, ArrowRight } from 'lucide-react'
 import useAuth from '../../hooks/useAuth'
 import authService from '../../services/auth.service'
 import InputField from '../../components/forms/InputField'
@@ -16,12 +15,7 @@ export default function Login() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
-    defaultValues: {
-      email: '',
-      password: '',
-    },
-  })
+  } = useForm({ defaultValues: { email: '', password: '' } })
 
   const onSubmit = async (data) => {
     setIsLoading(true)
@@ -30,19 +24,12 @@ export default function Login() {
       if (response.success && response.data) {
         toast.success(response.message || 'Login successful!')
         login(response.data.user, response.data.token)
-
-        if (response.data.user.role === 'ADMIN') {
-          navigate('/admin/dashboard')
-        } else {
-          navigate('/customer/dashboard')
-        }
+        navigate(response.data.user.role === 'ADMIN' ? '/admin/dashboard' : '/customer/dashboard')
       } else {
         toast.error(response.message || 'Login failed')
       }
     } catch (error) {
-      console.error(error)
-      const errorMsg = error.response?.data?.message || 'Invalid credentials or connection error'
-      toast.error(errorMsg)
+      toast.error(error.response?.data?.message || 'Invalid credentials or connection error')
     } finally {
       setIsLoading(false)
     }
@@ -50,78 +37,62 @@ export default function Login() {
 
   return (
     <div className="max-w-md w-full animate-slide-up">
-      <div className="bg-brand-bg-card border border-neutral-800 p-8 rounded-3xl shadow-2xl relative overflow-hidden">
-        {/* Glow Effects */}
-        <div className="absolute top-0 right-0 w-40 h-40 bg-brand-primary/8 rounded-full blur-3xl -z-10"></div>
-        <div className="absolute bottom-0 left-0 w-40 h-40 bg-brand-accent/5 rounded-full blur-3xl -z-10"></div>
+      <div className="glass-card-heavy p-8 md:p-10 rounded-2xl shadow-2xl relative overflow-hidden">
+        <div className="absolute -top-24 -right-24 w-48 h-48 bg-primary/10 blur-[100px] rounded-full"></div>
+        <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-secondary/10 blur-[100px] rounded-full"></div>
 
-        <div className="flex flex-col gap-6 text-center">
-          <div className="bg-gradient-to-br from-brand-primary to-amber-500 p-3.5 rounded-2xl w-fit self-center shadow-lg shadow-brand-primary/20 animate-float">
-            <Disc className="w-7 h-7 text-white" />
+        <div className="flex flex-col gap-6 text-center relative z-10">
+          <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-secondary mx-auto flex items-center justify-center animate-float">
+            <span className="material-symbols-outlined text-3xl text-white" style={{ fontVariationSettings: "'FILL' 1" }}>headphones</span>
           </div>
-
           <div>
-            <h2 className="text-2xl md:text-3xl font-extrabold text-white font-poppins">Welcome Back</h2>
-            <p className="text-neutral-500 text-sm mt-1">Sign in to manage your premium event bookings</p>
+            <h2 className="font-syne text-2xl md:text-3xl font-extrabold text-on-surface">Welcome Back</h2>
+            <p className="text-on-surface-variant text-sm mt-1">Sign in to manage your premium event bookings</p>
           </div>
         </div>
 
-        <form className="mt-8 flex flex-col gap-5.5" onSubmit={handleSubmit(onSubmit)}>
+        <form className="mt-8 flex flex-col gap-5 relative z-10" onSubmit={handleSubmit(onSubmit)}>
           <InputField
             label="Email Address"
             type="email"
             placeholder="you@example.com"
-            icon={Mail}
+            icon="mail"
             error={errors.email}
             disabled={isLoading}
             {...register('email', {
               required: 'Email address is required',
-              pattern: {
-                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                message: 'Please enter a valid email address',
-              },
+              pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Please enter a valid email address' },
             })}
           />
-
           <InputField
             label="Password"
             type="password"
             placeholder="••••••••••••"
-            icon={Lock}
+            icon="lock"
             error={errors.password}
             disabled={isLoading}
             {...register('password', {
               required: 'Password is required',
-              minLength: {
-                value: 6,
-                message: 'Password must be at least 6 characters',
-              },
+              minLength: { value: 6, message: 'Password must be at least 6 characters' },
             })}
           />
-
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-gradient-to-r from-brand-primary to-amber-500 hover:from-brand-primary-deep hover:to-amber-600 text-white font-semibold text-sm py-4 rounded-xl shadow-lg shadow-brand-primary/15 transition-all duration-300 transform hover:-translate-y-0.5 mt-2 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-brand-primary/25"
+            className="w-full bg-primary text-on-primary-container font-bold text-sm py-4 rounded-lg hover:shadow-[0_0_20px_rgba(221,183,255,0.6)] active:scale-[0.98] transition-all mt-2 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-wider"
           >
             {isLoading ? (
-              <>
-                <Disc className="w-4.5 h-4.5 animate-spin text-white" />
-                Signing In...
-              </>
+              <><span className="material-symbols-outlined animate-spin text-lg">progress_activity</span> Signing In...</>
             ) : (
-              <>
-                Sign In to Account
-                <ArrowRight className="w-4.5 h-4.5" />
-              </>
+              <><span className="material-symbols-outlined text-lg">login</span> Sign In to Account</>
             )}
           </button>
         </form>
 
-        <div className="mt-8 text-center border-t border-neutral-800 pt-6">
-          <p className="text-neutral-500 text-xs">
+        <div className="mt-8 text-center border-t border-white/10 pt-6 relative z-10">
+          <p className="text-on-surface-variant text-xs">
             Don't have an account yet?{' '}
-            <Link to="/register" className="text-brand-primary hover:text-brand-primary-light hover:underline font-semibold ml-1 transition-colors duration-300">Create free account</Link>
+            <Link to="/register" className="text-primary hover:text-secondary hover:underline font-bold ml-1 transition-colors duration-300">Create free account</Link>
           </p>
         </div>
       </div>

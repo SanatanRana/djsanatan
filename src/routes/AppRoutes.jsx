@@ -12,6 +12,7 @@ import Home from '../pages/public/Home'
 import Packages from '../pages/public/Packages'
 import Gallery from '../pages/public/Gallery'
 import Contact from '../pages/public/Contact'
+import BookEvent from '../pages/public/BookEvent'
 
 // Auth Pages
 import Login from '../pages/auth/Login'
@@ -20,6 +21,7 @@ import Register from '../pages/auth/Register'
 // Customer Dashboard Pages
 import CustomerDashboard from '../pages/customer/CustomerDashboard'
 import Bookings from '../pages/customer/Bookings'
+import Transactions from '../pages/customer/Transactions'
 
 // Admin Dashboard Pages
 import AdminDashboard from '../pages/admin/AdminDashboard'
@@ -50,6 +52,7 @@ export default function AppRoutes() {
         <Route path="/packages" element={<Packages />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/book" element={<BookEvent />} />
       </Route>
 
       {/* 2. Authentication Flow Routes */}
@@ -70,6 +73,7 @@ export default function AppRoutes() {
         <Route index element={<Navigate to="/customer/dashboard" replace />} />
         <Route path="dashboard" element={<CustomerDashboard />} />
         <Route path="bookings" element={<Bookings />} />
+        <Route path="transactions" element={<Transactions />} />
       </Route>
 
       {/* 4. Secure Admin Console Routes */}
@@ -85,6 +89,7 @@ export default function AppRoutes() {
         <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="packages" element={<ManagePackages />} />
         <Route path="bookings" element={<ManageBookings />} />
+        <Route path="transactions" element={<Transactions />} />
       </Route>
 
       {/* 5. Catch-All Redirect */}

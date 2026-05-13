@@ -8,24 +8,21 @@ export default function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        {/* Global Toast Notifications — Sonner */}
         <Toaster
           position="top-right"
           richColors
           theme="dark"
           toastOptions={{
             style: {
-              background: '#111111',
-              color: '#FAFAFA',
-              border: '1px solid rgba(249, 115, 22, 0.15)',
+              background: '#201F1F',
+              color: '#E5E2E1',
+              border: '1px solid rgba(221, 183, 255, 0.15)',
               borderRadius: '12px',
               fontSize: '13px',
               fontFamily: 'Inter, system-ui, sans-serif',
             },
           }}
         />
-
-        {/* Routed Pages */}
         <AppRoutes />
       </AuthProvider>
     </BrowserRouter>

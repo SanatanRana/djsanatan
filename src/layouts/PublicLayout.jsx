@@ -1,21 +1,24 @@
-import React from 'react'
-import { Outlet } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Outlet, useLocation } from 'react-router-dom'
 import Navbar from '../components/common/Navbar'
 import Footer from '../components/common/Footer'
+import WhatsAppFAB from '../components/common/WhatsAppFAB'
 
 export default function PublicLayout() {
-  return (
-    <div className="min-h-screen bg-brand-bg text-neutral-50 flex flex-col font-sans">
-      {/* Header */}
-      <Navbar />
+  const location = useLocation()
 
-      {/* Embedded Route View */}
-      <main className="flex-grow">
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [location.pathname])
+
+  return (
+    <div className="min-h-screen flex flex-col bg-background text-on-surface font-sans selection:bg-primary-container/30">
+      <Navbar />
+      <main className="flex-grow pt-20">
         <Outlet />
       </main>
-
-      {/* Footer */}
       <Footer />
+      <WhatsAppFAB />
     </div>
   )
 }

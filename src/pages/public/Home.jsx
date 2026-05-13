@@ -5,7 +5,7 @@ import FeaturedPackage from '../../components/home/FeaturedPackage'
 
 export default function Home() {
   return (
-    <div className="bg-brand-bg text-neutral-100 flex flex-col font-sans">
+    <div className="animate-fade-in">
       <Hero />
       <Features />
       <FeaturedPackage />

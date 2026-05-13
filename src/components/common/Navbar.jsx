@@ -1,131 +1,101 @@
 import React, { useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
-import { Disc, Menu, X, Calendar, LogIn } from 'lucide-react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const location = useLocation()
+  const navigate = useNavigate()
 
   const navLinks = [
-    { label: 'Home', path: '/' },
-    { label: 'Packages', path: '/packages' },
-    { label: 'Gallery', path: '/gallery' },
-    { label: 'Contact', path: '/contact' },
+    { name: 'Home', path: '/' },
+    { name: 'Packages', path: '/packages' },
+    { name: 'Gallery', path: '/gallery' },
+    { name: 'Contact', path: '/contact' },
   ]
 
-  const isActive = (path) => location.pathname === path
-
   return (
-    <nav className="sticky top-0 z-50 w-full border-b border-white/5 bg-black/80 backdrop-blur-xl transition-all duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          {/* Brand Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="bg-gradient-to-br from-brand-primary to-amber-500 p-2.5 rounded-xl shadow-lg shadow-brand-primary/20 group-hover:shadow-brand-primary/40 transition-shadow duration-300">
-              <Disc className="w-6 h-6 text-white animate-[spin_8s_linear_infinite]" />
-            </div>
-            <div>
-              <h1 className="text-lg sm:text-xl font-bold tracking-tight bg-gradient-to-r from-brand-primary via-brand-primary-light to-brand-accent bg-clip-text text-transparent font-poppins">
-                Rana DJ Events
-              </h1>
-              <p className="text-[10px] text-neutral-500 uppercase tracking-widest font-semibold font-sans">
-                Ultimate Premium Beats
-              </p>
-            </div>
-          </Link>
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-1 bg-neutral-900/60 p-1.5 rounded-full border border-white/5 shadow-inner">
-            {navLinks.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                className={`relative px-4 py-2 rounded-full text-xs font-semibold transition-all duration-300 ${
-                  isActive(link.path)
-                    ? 'text-white bg-gradient-to-r from-brand-primary to-amber-500 shadow-md shadow-brand-primary/15'
-                    : 'text-neutral-400 hover:text-neutral-200 hover:bg-white/5'
-                }`}
-              >
-                {link.label}
-              </Link>
-            ))}
-          </div>
-
-          {/* Desktop Auth + CTA */}
-          <div className="hidden md:flex items-center gap-4">
-            <Link
-              to="/login"
-              className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-300 ${
-                isActive('/login') ? 'text-white bg-white/5' : 'text-neutral-400 hover:text-neutral-200'
-              }`}
-            >
-              <LogIn className="w-4 h-4 text-brand-primary" />
-              Sign In
-            </Link>
-            <Link
-              to="/customer/bookings"
-              className="inline-flex items-center gap-1.5 bg-gradient-to-r from-brand-primary to-amber-500 hover:from-brand-primary-deep hover:to-amber-600 text-white font-bold text-xs px-5 py-3 rounded-xl shadow-lg shadow-brand-primary/20 transition-all duration-300 hover:scale-[1.02] hover:shadow-brand-primary/30"
-            >
-              <Calendar className="w-4 h-4" />
-              Book Now
-            </Link>
-          </div>
-
-          {/* Mobile Menu Toggle */}
-          <div className="flex md:hidden">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="inline-flex items-center justify-center p-2.5 rounded-xl text-neutral-400 hover:text-neutral-200 hover:bg-white/5 border border-white/5 transition-all focus:outline-none"
-              aria-expanded="false"
-            >
-              <span className="sr-only">Open main menu</span>
-              {isOpen ? <X className="w-6 h-6 text-brand-primary" /> : <Menu className="w-6 h-6" />}
-            </button>
-          </div>
+    <>
+      <header className="fixed top-0 w-full z-50 flex justify-between items-center px-6 md:px-8 py-4 bg-white/10 backdrop-blur-md border-b border-white/20 neon-glow-primary">
+        <div className="flex items-center gap-4">
+          <button className="material-symbols-outlined text-primary cursor-pointer md:hidden" onClick={() => setIsOpen(true)}>menu</button>
+          <Link to="/" className="font-syne text-xl md:text-2xl font-bold tracking-tighter text-primary">RANA DJ EVENTS</Link>
         </div>
-      </div>
 
-      {/* Mobile Drawer */}
-      <div
-        className={`md:hidden absolute top-20 left-0 w-full transition-all duration-300 ease-in-out border-b border-white/5 bg-black/95 backdrop-blur-xl shadow-2xl ${
-          isOpen ? 'opacity-100 translate-y-0 visible' : 'opacity-0 -translate-y-4 invisible'
-        }`}
-      >
-        <div className="px-4 pt-4 pb-6 space-y-3">
-          {navLinks.map((link) => (
+        <nav className="hidden md:flex items-center gap-8">
+          {navLinks.map(link => (
             <Link
               key={link.path}
               to={link.path}
-              onClick={() => setIsOpen(false)}
-              className={`block px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 ${
-                isActive(link.path)
-                  ? 'bg-gradient-to-r from-brand-primary to-amber-500 text-white'
-                  : 'text-neutral-400 hover:text-neutral-200 hover:bg-white/5'
+              className={`font-sans text-xs uppercase tracking-[0.05em] font-semibold transition-all hover:text-secondary ${
+                location.pathname === link.path ? 'text-secondary font-bold' : 'text-on-surface-variant'
               }`}
             >
-              {link.label}
+              {link.name}
             </Link>
           ))}
-          <div className="pt-4 border-t border-white/5 flex flex-col gap-3">
-            <Link
-              to="/login"
-              onClick={() => setIsOpen(false)}
-              className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-semibold text-neutral-400 hover:text-neutral-200 hover:bg-white/5 transition-all duration-200"
-            >
-              <LogIn className="w-4 h-4 text-brand-primary" />
-              Sign In
-            </Link>
-            <Link
-              to="/customer/bookings"
-              onClick={() => setIsOpen(false)}
-              className="flex items-center justify-center gap-2 bg-gradient-to-r from-brand-primary to-amber-500 text-white font-bold text-sm py-3.5 rounded-xl shadow-lg transition-all duration-200"
-            >
-              <Calendar className="w-4.5 h-4.5" />
-              Book Now
-            </Link>
+        </nav>
+
+        <div className="hidden md:flex items-center gap-4">
+          <Link
+            to="/login"
+            className={`font-sans text-xs uppercase tracking-wider font-semibold transition-all hover:text-primary ${
+              location.pathname === '/login' ? 'text-primary' : 'text-on-surface-variant'
+            }`}
+          >
+            Sign In
+          </Link>
+          <button
+            onClick={() => navigate('/book')}
+            className="bg-btn-gradient px-6 py-2.5 rounded-full font-sans text-xs text-white active:scale-95 duration-150 shadow-lg font-bold uppercase tracking-wider"
+          >
+            Book Now
+          </button>
+        </div>
+
+        <button className="md:hidden material-symbols-outlined text-on-surface-variant" onClick={() => setIsOpen(!isOpen)}>
+          {isOpen ? 'close' : 'menu'}
+        </button>
+      </header>
+
+      {/* Mobile Drawer */}
+      <aside className={`fixed inset-y-0 left-0 z-[60] flex flex-col p-6 h-full w-80 rounded-r-xl bg-surface/95 backdrop-blur-2xl border-r border-white/10 shadow-2xl transition-transform duration-300 md:hidden ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+        <div className="flex items-center justify-between mb-12">
+          <span className="font-syne text-2xl font-bold text-primary">RANA DJ</span>
+          <button className="material-symbols-outlined text-on-surface" onClick={() => setIsOpen(false)}>close</button>
+        </div>
+
+        <div className="flex items-center gap-4 mb-12 p-4 glass-card rounded-xl">
+          <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
+            <span className="material-symbols-outlined text-primary">person</span>
+          </div>
+          <div>
+            <h6 className="font-bold text-on-surface text-sm">Guest User</h6>
+            <p className="text-on-surface-variant text-[10px] uppercase tracking-widest">Nightlife Elite</p>
           </div>
         </div>
-      </div>
-    </nav>
+
+        <nav className="flex flex-col gap-2">
+          {[
+            { name: 'Discover Events', path: '/', icon: 'explore' },
+            { name: 'Experience Packages', path: '/packages', icon: 'auto_awesome' },
+            { name: 'Visual Gallery', path: '/gallery', icon: 'photo_library' },
+            { name: 'VIP Contact', path: '/contact', icon: 'stars' },
+          ].map(item => (
+            <button
+              key={item.path}
+              onClick={() => { navigate(item.path); setIsOpen(false); }}
+              className={`flex items-center gap-4 p-4 rounded-lg font-bold text-sm transition-all ${
+                location.pathname === item.path ? 'bg-primary-container text-on-primary-container' : 'text-on-surface-variant hover:bg-white/5'
+              }`}
+            >
+              <span className="material-symbols-outlined">{item.icon}</span> {item.name}
+            </button>
+          ))}
+        </nav>
+      </aside>
+
+      {/* Backdrop overlay */}
+      {isOpen && <div className="fixed inset-0 z-[55] bg-black/50 md:hidden" onClick={() => setIsOpen(false)}></div>}
+    </>
   )
 }

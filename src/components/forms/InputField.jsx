@@ -2,37 +2,50 @@ import React, { forwardRef } from 'react'
 
 const InputField = forwardRef(({
   label,
-  icon: Icon,
+  icon,
   error,
   type = 'text',
   placeholder,
   ...props
 }, ref) => {
+  const handleWrapperClick = (e) => {
+    try {
+      if (type === 'date' || type === 'time') {
+        const inputElement = e.currentTarget.querySelector('input')
+        if (inputElement && inputElement.showPicker) {
+          inputElement.showPicker()
+        }
+      }
+    } catch (err) {
+      // Ignored if browser doesn't support showPicker
+    }
+  }
+
   return (
     <div className="flex flex-col gap-2 w-full">
       {label && (
-        <label className="text-xs font-semibold text-neutral-300 uppercase tracking-wider">
+        <label className="font-sans text-xs uppercase tracking-widest font-semibold text-on-surface-variant">
           {label}
         </label>
       )}
-      <div className="relative group">
-        {Icon && (
-          <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-neutral-500 group-focus-within:text-brand-primary transition-colors duration-300">
-            <Icon className="w-5 h-5" />
+      <div className="relative group cursor-pointer" onClick={handleWrapperClick}>
+        {icon && (
+          <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-on-surface-variant group-focus-within:text-primary transition-colors duration-300">
+            <span className="material-symbols-outlined text-xl">{icon}</span>
           </span>
         )}
         <input
           ref={ref}
           type={type}
           placeholder={placeholder}
-          className={`w-full ${Icon ? 'pl-11' : 'px-4'} pr-4 py-3.5 bg-brand-bg-card border rounded-xl text-neutral-100 text-sm placeholder-neutral-600 focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary/50 transition-all duration-300 font-sans ${
-            error ? 'border-red-500 focus:border-red-500 focus:ring-red-500/50' : 'border-neutral-800 hover:border-neutral-700'
+          className={`w-full ${icon ? 'pl-12' : 'px-4'} pr-4 py-4 bg-black/40 border rounded-lg text-white text-sm placeholder-on-surface-variant/50 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-300 font-sans ${
+            error ? 'border-error focus:border-error focus:ring-error/50' : 'border-white/10 hover:border-white/20'
           }`}
           {...props}
         />
       </div>
       {error && (
-        <span className="text-xs font-medium text-red-400 mt-0.5 animate-fade-in">
+        <span className="text-xs font-medium text-error mt-0.5 animate-fade-in">
           {error.message || error}
         </span>
       )}
@@ -41,5 +54,4 @@ const InputField = forwardRef(({
 })
 
 InputField.displayName = 'InputField'
-
 export default InputField
