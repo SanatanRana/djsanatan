@@ -56,6 +56,15 @@ export default function ManageBookings() {
     }
   }
 
+  const isEventPast = (dateStr, timeStr) => {
+    try {
+      const eventDateTime = new Date(`${dateStr}T${timeStr}`)
+      return new Date() > eventDateTime
+    } catch {
+      return false
+    }
+  }
+
   return (
     <div className="flex flex-col gap-8 animate-fade-in">
       <div>
@@ -82,7 +91,18 @@ export default function ManageBookings() {
               <tbody>
                 {bookings.map(b => (
                   <tr key={b.id} className="border-b border-white/5 hover:bg-white/5 transition">
-                    <td className="px-4 py-3 font-bold text-on-surface">{b.eventType}</td>
+                    <td className="px-4 py-3 text-xs">
+                      <p className="font-syne font-bold text-sm text-on-surface">{b.eventType}</p>
+                      {b.packageName && (
+                        <p className="text-primary font-semibold mt-0.5">{b.packageName}</p>
+                      )}
+                      {b.adminName && (
+                        <p className="text-[10px] text-on-surface-variant mt-1 uppercase tracking-wider flex items-center gap-1">
+                          <span className="material-symbols-outlined text-[12px] text-secondary">person</span>
+                          DJ: {b.adminName}
+                        </p>
+                      )}
+                    </td>
                     <td className="px-4 py-3 text-xs">
                       <p className="font-bold text-on-surface whitespace-nowrap">{b.userFullName} <span className="text-on-surface-variant font-normal tracking-widest text-[10px] uppercase ml-1">(ID: {b.userId})</span></p>
                       {b.userPhone && <p className="text-primary font-bold mt-0.5">{b.userPhone}</p>}
@@ -109,7 +129,17 @@ export default function ManageBookings() {
                         </div>
                       )}
                       {b.bookingStatus === 'CONFIRMED' && (
-                        <button onClick={() => handleStatusUpdate(b, 'COMPLETED')} className="bg-primary/20 text-primary hover:bg-primary hover:text-white px-3 py-1 rounded text-xs font-bold transition">Complete</button>
+                        <button 
+                          onClick={() => handleStatusUpdate(b, 'COMPLETED')} 
+                          disabled={!isEventPast(b.eventDate, b.endTime)}
+                          title={!isEventPast(b.eventDate, b.endTime) ? 'Event slot must pass before marking as complete' : ''}
+                          className={`px-3 py-1 rounded text-xs font-bold transition ${
+                            isEventPast(b.eventDate, b.endTime) 
+                              ? 'bg-primary/20 text-primary hover:bg-primary hover:text-white' 
+                              : 'bg-white/5 text-white/30 cursor-not-allowed'
+                          }`}>
+                            Complete
+                        </button>
                       )}
                       {['CANCELLED', 'REJECTED', 'COMPLETED'].includes(b.bookingStatus) && (
                         <button onClick={() => handleDeleteBooking(b.id, b.eventType)} className="bg-error/10 text-error hover:bg-error hover:text-white px-3 py-1 rounded text-xs font-bold transition flex items-center gap-1">

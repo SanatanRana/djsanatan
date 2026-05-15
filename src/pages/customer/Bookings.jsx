@@ -42,6 +42,27 @@ export default function Bookings() {
     }
   }
 
+  const handleDeleteBooking = async (id) => {
+    if (window.confirm('Are you sure you want to permanently delete this booking history?')) {
+      try {
+        await bookingService.deleteBooking(id)
+        toast.success('Booking history deleted')
+        fetchBookings()
+      } catch (err) {
+        toast.error(err.response?.data?.message || 'Failed to delete booking')
+      }
+    }
+  }
+
+  const isEventPast = (dateStr, timeStr) => {
+    try {
+      const eventDateTime = new Date(`${dateStr}T${timeStr}`)
+      return new Date() > eventDateTime
+    } catch {
+      return false
+    }
+  }
+
   const startPaymentFlow = async (booking) => {
     setSelectedBooking(booking)
     setCheckoutStep(1) // Step 1: Initialize
@@ -101,7 +122,14 @@ export default function Bookings() {
             {bookings.map(b => (
               <div key={b.id} className="bg-white/5 border border-white/10 rounded-xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div className="flex flex-col gap-2">
-                  <h3 className="font-syne text-xl font-bold text-on-surface">{b.eventType}</h3>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <h3 className="font-syne text-xl font-bold text-on-surface">{b.eventType}</h3>
+                    {b.packageName && (
+                      <span className="bg-primary/15 text-primary text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded border border-primary/20">
+                        {b.packageName}
+                      </span>
+                    )}
+                  </div>
                   <div className="flex items-center gap-4 text-xs text-on-surface-variant">
                     <span className="flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">calendar_today</span> {b.eventDate}</span>
                     <span className="flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">schedule</span> {b.startTime} - {b.endTime}</span>
@@ -109,6 +137,20 @@ export default function Bookings() {
                   <div className="flex items-center gap-1 text-xs text-on-surface-variant">
                     <span className="material-symbols-outlined text-[14px]">location_on</span> {b.eventLocation}
                   </div>
+                  {b.adminName && (
+                    <div className="mt-2 text-xs border-t border-white/5 pt-2 flex flex-col gap-1">
+                      <span className="text-on-surface-variant flex items-center gap-1">
+                        <span className="material-symbols-outlined text-[14px] text-secondary">person</span>
+                        DJ Owner: <strong className="text-on-surface">{b.adminName}</strong>
+                      </span>
+                      {b.adminPhone && (
+                        <span className="text-on-surface-variant flex items-center gap-1">
+                          <span className="material-symbols-outlined text-[14px] text-secondary">phone</span>
+                          Contact: <strong className="text-primary">{b.adminPhone}</strong>
+                        </span>
+                      )}
+                    </div>
+                  )}
                 </div>
 
                 <div className="flex flex-col md:items-end gap-3">
@@ -155,6 +197,16 @@ export default function Bookings() {
                         className="border border-error/40 text-error/80 hover:bg-error hover:text-white px-5 py-2 rounded-lg font-sans text-xs font-bold uppercase tracking-wider transition-all"
                       >
                         Cancel Request
+                      </button>
+                    )}
+
+                    {/* Delete History Button */}
+                    {['COMPLETED', 'CANCELLED', 'REJECTED'].includes(b.bookingStatus) && isEventPast(b.eventDate, b.endTime) && (
+                      <button 
+                        onClick={() => handleDeleteBooking(b.id)}
+                        className="border border-error/20 text-error/80 hover:bg-error hover:text-white px-5 py-2 rounded-lg font-sans text-xs font-bold uppercase tracking-wider transition-all"
+                      >
+                        Delete History
                       </button>
                     )}
                   </div>

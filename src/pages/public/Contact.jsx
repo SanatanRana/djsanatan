@@ -19,48 +19,46 @@ export default function Contact() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-        {/* Contact Form */}
+        {/* Company & Admin Details */}
         <div className="md:col-span-7 glass-card p-8 rounded-xl relative overflow-hidden group">
           <div className="absolute -top-24 -right-24 w-48 h-48 bg-primary/10 blur-[100px] rounded-full"></div>
           <h3 className="font-syne text-2xl md:text-3xl font-bold mb-8 flex items-center gap-3">
-            <span className="material-symbols-outlined text-secondary">send</span> Send a Request
+            <span className="material-symbols-outlined text-secondary">corporate_fare</span> Company Profile
           </h3>
 
-          {formSubmitted ? (
-            <div className="text-center py-20 bg-white/5 rounded-xl border border-primary/30">
-              <span className="material-symbols-outlined text-6xl text-primary mb-4">check_circle</span>
-              <h4 className="font-syne text-2xl font-bold mb-2">Transmission Received</h4>
-              <p className="text-on-surface-variant">Our agents will contact you shortly.</p>
-              <button onClick={() => setFormSubmitted(false)} className="mt-8 text-primary underline text-sm font-semibold">Send another request</button>
+          <div className="space-y-8">
+            <div className="bg-white/5 p-6 rounded-xl border border-white/10">
+              <h4 className="font-sans text-xs uppercase tracking-[0.2em] font-semibold text-primary mb-4">About the Company</h4>
+              <p className="text-on-surface-variant text-sm leading-relaxed mb-4">
+                Rana DJ Events is the premier sound and lighting provider in the region. We specialize in curating the soundscapes of the world's most exclusive nights, from intimate VIP lounges to massive festival stages.
+              </p>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-xs text-on-surface-variant uppercase tracking-wider font-semibold">Industry</p>
+                  <p className="font-bold text-white">Entertainment & Events</p>
+                </div>
+                <div>
+                  <p className="text-xs text-on-surface-variant uppercase tracking-wider font-semibold">Trusted By</p>
+                  <p className="font-bold text-success flex items-center gap-1">
+                    <span className="material-symbols-outlined text-[16px]">verified</span> 500+ Happy Clients
+                  </p>
+                </div>
+              </div>
             </div>
-          ) : (
-            <form className="space-y-6" onSubmit={handleSubmit}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="font-sans text-xs uppercase tracking-widest font-semibold text-on-surface-variant">Name</label>
-                  <input required className="w-full bg-black/40 border border-white/10 rounded-lg p-4 text-white text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder-on-surface-variant/50" placeholder="John Doe" type="text" />
-                </div>
-                <div className="space-y-2">
-                  <label className="font-sans text-xs uppercase tracking-widest font-semibold text-on-surface-variant">Email</label>
-                  <input required className="w-full bg-black/40 border border-white/10 rounded-lg p-4 text-white text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder-on-surface-variant/50" placeholder="john@example.com" type="email" />
-                </div>
-              </div>
 
-              <div className="space-y-2">
-                <label className="font-sans text-xs uppercase tracking-widest font-semibold text-on-surface-variant">Event Date</label>
-                <input required className="w-full bg-black/40 border border-white/10 rounded-lg p-4 text-white text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" type="date" />
+            <div className="bg-white/5 p-6 rounded-xl border border-white/10 flex items-start gap-4">
+              <div className="w-16 h-16 rounded-full bg-btn-gradient flex items-center justify-center shrink-0">
+                <span className="material-symbols-outlined text-white text-3xl">person</span>
               </div>
-
-              <div className="space-y-2">
-                <label className="font-sans text-xs uppercase tracking-widest font-semibold text-on-surface-variant">Message</label>
-                <textarea required className="w-full bg-black/40 border border-white/10 rounded-lg p-4 text-white text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder-on-surface-variant/50" placeholder="Tell us about your event vision..." rows="4"></textarea>
+              <div>
+                <h4 className="font-sans text-xs uppercase tracking-[0.2em] font-semibold text-secondary mb-1">Super Admin / Owner</h4>
+                <p className="font-syne font-bold text-2xl text-white">Rana DJ</p>
+                <p className="text-on-surface-variant text-sm mt-2">
+                  With over a decade of experience in the music industry, DJ Rana leads the team to deliver unforgettable experiences with state-of-the-art equipment and unmatched energy.
+                </p>
               </div>
-
-              <button type="submit" className="w-full py-4 bg-primary text-on-primary-container font-bold rounded-lg hover:shadow-[0_0_20px_rgba(221,183,255,0.6)] active:scale-[0.98] transition-all text-sm uppercase tracking-wider">
-                Transmit Request
-              </button>
-            </form>
-          )}
+            </div>
+          </div>
         </div>
 
         {/* Contact Channels + Map */}

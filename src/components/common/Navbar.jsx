@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext'
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const location = useLocation()
   const navigate = useNavigate()
+  const { user, isAuthenticated, isAdmin, logout } = useAuth()
 
   const navLinks = [
     { name: 'Home', path: '/' },
@@ -36,20 +38,42 @@ export default function Navbar() {
         </nav>
 
         <div className="hidden md:flex items-center gap-4">
-          <Link
-            to="/login"
-            className={`font-sans text-xs uppercase tracking-wider font-semibold transition-all hover:text-primary ${
-              location.pathname === '/login' ? 'text-primary' : 'text-on-surface-variant'
-            }`}
-          >
-            Sign In
-          </Link>
-          <button
-            onClick={() => navigate('/book')}
-            className="bg-btn-gradient px-6 py-2.5 rounded-full font-sans text-xs text-white active:scale-95 duration-150 shadow-lg font-bold uppercase tracking-wider"
-          >
-            Book Now
-          </button>
+          {isAuthenticated ? (
+            <>
+              <Link
+                to={isAdmin ? '/admin/dashboard' : '/customer/dashboard'}
+                className="font-sans text-xs uppercase tracking-wider font-semibold transition-all hover:text-primary text-on-surface-variant"
+              >
+                Dashboard
+              </Link>
+              <button
+                onClick={() => {
+                  logout()
+                  navigate('/')
+                }}
+                className="border border-white/20 hover:border-error/50 hover:text-error px-6 py-2.5 rounded-full font-sans text-xs text-on-surface-variant active:scale-95 duration-150 font-bold uppercase tracking-wider cursor-pointer"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                className={`font-sans text-xs uppercase tracking-wider font-semibold transition-all hover:text-primary ${
+                  location.pathname === '/login' ? 'text-primary' : 'text-on-surface-variant'
+                }`}
+              >
+                Sign In
+              </Link>
+              <button
+                onClick={() => navigate('/book')}
+                className="bg-btn-gradient px-6 py-2.5 rounded-full font-sans text-xs text-white active:scale-95 duration-150 shadow-lg font-bold uppercase tracking-wider"
+              >
+                Book Now
+              </button>
+            </>
+          )}
         </div>
 
         <button className="md:hidden material-symbols-outlined text-on-surface-variant" onClick={() => setIsOpen(!isOpen)}>
@@ -69,8 +93,8 @@ export default function Navbar() {
             <span className="material-symbols-outlined text-primary">person</span>
           </div>
           <div>
-            <h6 className="font-bold text-on-surface text-sm">Guest User</h6>
-            <p className="text-on-surface-variant text-[10px] uppercase tracking-widest">Nightlife Elite</p>
+            <h6 className="font-bold text-on-surface text-sm">{isAuthenticated ? user?.fullName : 'Guest User'}</h6>
+            <p className="text-on-surface-variant text-[10px] uppercase tracking-widest">{isAuthenticated ? user?.role : 'Nightlife Elite'}</p>
           </div>
         </div>
 
@@ -91,6 +115,32 @@ export default function Navbar() {
               <span className="material-symbols-outlined">{item.icon}</span> {item.name}
             </button>
           ))}
+
+          <div className="border-t border-white/5 my-4"></div>
+
+          {isAuthenticated ? (
+            <>
+              <button
+                onClick={() => { navigate(isAdmin ? '/admin/dashboard' : '/customer/dashboard'); setIsOpen(false); }}
+                className="flex items-center gap-4 p-4 rounded-lg font-bold text-sm text-secondary hover:bg-white/5 transition-all text-left"
+              >
+                <span className="material-symbols-outlined">dashboard</span> Dashboard
+              </button>
+              <button
+                onClick={() => { logout(); navigate('/'); setIsOpen(false); }}
+                className="flex items-center gap-4 p-4 rounded-lg font-bold text-sm text-error hover:bg-error/10 transition-all text-left"
+              >
+                <span className="material-symbols-outlined">logout</span> Logout
+              </button>
+            </>
+          ) : (
+            <button
+              onClick={() => { navigate('/login'); setIsOpen(false); }}
+              className="flex items-center gap-4 p-4 rounded-lg font-bold text-sm text-primary hover:bg-white/5 transition-all text-left"
+            >
+              <span className="material-symbols-outlined">login</span> Sign In
+            </button>
+          )}
         </nav>
       </aside>
 

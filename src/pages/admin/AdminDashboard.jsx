@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import bookingService from '../../services/booking.service'
 import packageService from '../../services/package.service'
+import paymentService from '../../services/payment.service'
 import { toast } from 'sonner'
 
 export default function AdminDashboard() {
@@ -21,17 +22,22 @@ export default function AdminDashboard() {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const [bookingsRes, packagesRes] = await Promise.all([
+        const [bookingsRes, packagesRes, paymentsRes] = await Promise.all([
           bookingService.getAllBookings(),
-          packageService.getAllPackages()
+          packageService.getAllPackages(),
+          paymentService.getPaymentHistory()
         ])
         
         const allBookings = bookingsRes.content ? bookingsRes.content : bookingsRes
         const allPackages = packagesRes.content ? packagesRes.content : packagesRes
+        const allPayments = Array.isArray(paymentsRes) ? paymentsRes : []
 
         if (Array.isArray(allBookings)) {
           const confirmedBookings = allBookings.filter(b => b.bookingStatus === 'CONFIRMED' || b.bookingStatus === 'COMPLETED')
-          const totalRevenue = allBookings.reduce((sum, b) => sum + (b.advanceAmount || 0), 0)
+          // Revenue = sum of actual verified SUCCESS payments (single source of truth)
+          const totalRevenue = allPayments
+            .filter(p => p.paymentStatus === 'SUCCESS')
+            .reduce((sum, p) => sum + (p.amount || 0), 0)
           
           setStats({
             packages: Array.isArray(allPackages) ? allPackages.length : 0,

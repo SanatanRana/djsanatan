@@ -109,7 +109,8 @@ export default function Transactions() {
               <thead className="text-xs uppercase bg-white/5 text-on-surface">
                 <tr>
                   <th className="px-4 py-3 rounded-tl-lg">Transaction Details</th>
-                  <th className="px-4 py-3">Razorpay Order / Pay ID</th>
+                  {isAdmin && <th className="px-4 py-3">Customer</th>}
+                  <th className="px-4 py-3">Event</th>
                   <th className="px-4 py-3">Paid Date</th>
                   <th className="px-4 py-3">Method</th>
                   <th className="px-4 py-3">Status</th>
@@ -122,10 +123,20 @@ export default function Transactions() {
                     <td className="px-4 py-3">
                       <p className="font-bold text-on-surface">Invoice #{p.id}</p>
                       <p className="text-[10px] text-on-surface-variant uppercase tracking-wider mt-0.5">Booking Ref: #{p.bookingId}</p>
+                      <p className="text-[9px] text-on-surface-variant font-mono mt-0.5 truncate max-w-[180px]" title={p.razorpayOrderId}>
+                        {p.razorpayPaymentId ? `Pay: ${p.razorpayPaymentId}` : `Order: ${p.razorpayOrderId}`}
+                      </p>
                     </td>
-                    <td className="px-4 py-3 font-mono text-xs">
-                      <p className="text-on-surface-variant">Order: {p.razorpayOrderId}</p>
-                      {p.razorpayPaymentId && <p className="text-primary font-bold">Pay: {p.razorpayPaymentId}</p>}
+                    {isAdmin && (
+                      <td className="px-4 py-3">
+                        <p className="font-bold text-on-surface text-xs">{p.customerName || '—'}</p>
+                        <p className="text-[10px] text-on-surface-variant">{p.customerEmail || ''}</p>
+                        <p className="text-[10px] text-on-surface-variant">{p.customerPhone || ''}</p>
+                      </td>
+                    )}
+                    <td className="px-4 py-3">
+                      <p className="font-bold text-on-surface text-xs">{p.eventType || '—'}</p>
+                      <p className="text-[10px] text-on-surface-variant">{p.eventDate || ''}</p>
                     </td>
                     <td className="px-4 py-3 text-xs">
                       {p.paidAt ? (
@@ -139,11 +150,15 @@ export default function Transactions() {
                     </td>
                     <td className="px-4 py-3">
                       <span className="px-2 py-0.5 bg-white/5 border border-white/10 rounded font-sans text-[10px] font-bold uppercase tracking-wider">
-                        {p.paymentMethod || 'UPI'}
+                        {p.paymentMethod || '—'}
                       </span>
                     </td>
                     <td className="px-4 py-3">
-                      <span className={`px-2 py-1 text-[9px] rounded uppercase font-bold tracking-widest ${p.paymentStatus === 'SUCCESS' ? 'bg-success/20 text-success' : 'bg-warning/20 text-warning'}`}>
+                      <span className={`px-2 py-1 text-[9px] rounded uppercase font-bold tracking-widest ${
+                        p.paymentStatus === 'SUCCESS' ? 'bg-success/20 text-success' : 
+                        p.paymentStatus === 'EXPIRED' ? 'bg-red-500/20 text-red-400' : 
+                        'bg-warning/20 text-warning'
+                      }`}>
                         {p.paymentStatus}
                       </span>
                     </td>

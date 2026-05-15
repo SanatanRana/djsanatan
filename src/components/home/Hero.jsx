@@ -1,8 +1,10 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext'
 
 export default function Hero() {
   const navigate = useNavigate()
+  const { isAuthenticated } = useAuth()
 
   return (
     <section className="relative min-h-[calc(100vh-80px)] flex items-center px-6 md:px-16 overflow-hidden">
@@ -27,7 +29,7 @@ export default function Hero() {
         </p>
         <div className="flex flex-wrap gap-4">
           <button
-            onClick={() => navigate('/contact')}
+            onClick={() => navigate(isAuthenticated ? '/packages' : '/login')}
             className="bg-btn-gradient px-10 py-4 rounded-xl font-syne text-base md:text-lg text-white glass-card-heavy active:scale-95 duration-200 neon-glow-primary font-bold"
           >
             Book Your Set
