@@ -3,7 +3,7 @@ import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import { toast } from 'sonner';
 
-const WEBSOCKET_URL = 'http://localhost:8080/ws-booking';
+const WEBSOCKET_URL = import.meta.env.VITE_WS_URL || (import.meta.env.VITE_API_BASE_URL ? import.meta.env.VITE_API_BASE_URL.replace('http', 'ws').replace('/api', '/ws-booking') : 'http://localhost:8080/ws-booking');
 
 export default function useSlotAvailability(adminId) {
     const [lockedSlots, setLockedSlots] = useState([]);
