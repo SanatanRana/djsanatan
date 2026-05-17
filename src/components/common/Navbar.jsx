@@ -11,6 +11,7 @@ export default function Navbar() {
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'Packages', path: '/packages' },
+    { name: 'Our DJ', path: '/dj' },
     { name: 'Gallery', path: '/gallery' },
     { name: 'Contact', path: '/contact' },
   ]
@@ -76,9 +77,6 @@ export default function Navbar() {
           )}
         </div>
 
-        <button className="md:hidden material-symbols-outlined text-on-surface-variant" onClick={() => setIsOpen(!isOpen)}>
-          {isOpen ? 'close' : 'menu'}
-        </button>
       </header>
 
       {/* Mobile Drawer */}
@@ -102,6 +100,7 @@ export default function Navbar() {
           {[
             { name: 'Discover Events', path: '/', icon: 'explore' },
             { name: 'Experience Packages', path: '/packages', icon: 'auto_awesome' },
+            { name: 'Our DJ', path: '/dj', icon: 'headphones' },
             { name: 'Visual Gallery', path: '/gallery', icon: 'photo_library' },
             { name: 'VIP Contact', path: '/contact', icon: 'stars' },
           ].map(item => (

@@ -13,6 +13,8 @@ import Packages from '../pages/public/Packages'
 import Gallery from '../pages/public/Gallery'
 import Contact from '../pages/public/Contact'
 import BookEvent from '../pages/public/BookEvent'
+import DjProfile from '../pages/public/DjProfile'
+import DjOwnersList from '../pages/public/DjOwnersList'
 
 // Auth Pages
 import Login from '../pages/auth/Login'
@@ -27,6 +29,7 @@ import Transactions from '../pages/customer/Transactions'
 import AdminDashboard from '../pages/admin/AdminDashboard'
 import ManagePackages from '../pages/admin/ManagePackages'
 import ManageBookings from '../pages/admin/ManageBookings'
+import ManageMedia from '../pages/admin/ManageMedia'
 
 // Private Route Guards
 function RequireAuth({ children, requireAdmin = false }) {
@@ -53,6 +56,8 @@ export default function AppRoutes() {
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/book" element={<BookEvent />} />
+        <Route path="/dj" element={<DjOwnersList />} />
+        <Route path="/dj/:adminId" element={<DjProfile />} />
       </Route>
 
       {/* 2. Authentication Flow Routes */}
@@ -89,6 +94,7 @@ export default function AppRoutes() {
         <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="packages" element={<ManagePackages />} />
         <Route path="bookings" element={<ManageBookings />} />
+        <Route path="media" element={<ManageMedia />} />
         <Route path="transactions" element={<Transactions />} />
       </Route>
 
@@ -97,3 +103,4 @@ export default function AppRoutes() {
     </Routes>
   )
 }
+

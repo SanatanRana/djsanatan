@@ -75,6 +75,17 @@ export default function DashboardLayout() {
                   Manage Packages
                 </Link>
                 <Link
+                  to="/admin/media"
+                  className={`flex items-center gap-4 px-4 py-3 rounded-lg text-sm font-bold transition-all ${
+                    location.pathname === '/admin/media'
+                      ? 'bg-primary-container text-on-primary-container'
+                      : 'text-on-surface-variant hover:bg-white/5'
+                  }`}
+                >
+                  <span className="material-symbols-outlined">perm_media</span>
+                  Manage Media
+                </Link>
+                <Link
                   to="/admin/bookings"
                   className={`flex items-center gap-4 px-4 py-3 rounded-lg text-sm font-bold transition-all ${
                     location.pathname === '/admin/bookings'
